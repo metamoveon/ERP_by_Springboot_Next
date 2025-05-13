@@ -37,7 +37,7 @@ export default function Home() {
     <div className="login-container">
       <div className="login-box">
         <h1 className="login-title">
-          <i className="fas fa-leaf"></i> Spring-ERP Project
+          <i className="fas fa-leaf"></i> Spring-ERP 2025
         </h1>
         <h2 className="login-subtitle">
           ระบบ Enterprise Resource Planning
@@ -66,7 +66,9 @@ export default function Home() {
             />
           </div>
           <button
-            type="button" className="login-button" onClick={handleSignIn}>
+            type="button"
+            className="login-button"
+            onClick={handleSignIn}>
             <i className="fas fa-sign-in-alt mr-2"></i>
             Sign In
           </button>
