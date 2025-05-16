@@ -79,12 +79,12 @@
   @apply space-y-3;
 }
 
-.sidebar-nav-item {
-  @apply hover:bg-white/20 rounded-lg p-2 transition-colors;
+.sidebar-nav-link {
+  @apply flex items-center gap-2 cursor-pointer hover:bg-white/30 p-2 rounded-lg;
 }
 
-.sidebar-nav-link {
-  @apply flex items-center gap-2;
+.sidebar-nav-link-active {
+  @apply flex items-center gap-2 cursor-pointer bg-white/30 p-2 rounded-lg transition-colors;
 }
 
 .button {
@@ -94,6 +94,10 @@
 /** table **/
 .button-add {
   @apply bg-green-600/80 text-white px-4 py-2 rounded-md text-base font-medium;
+}
+
+.table {
+  @apply w-full;
 }
 
 .table-container {
@@ -113,7 +117,7 @@
 }
 
 .table td {
-  @apply px-6 py-4 text-sm text-gray-700 whitespace-nowrap;
+  @apply px-6 py-4 text-sm text-gray-700 whitespace-nowrap bg-white;
 }
 
 .table-action-btn {
