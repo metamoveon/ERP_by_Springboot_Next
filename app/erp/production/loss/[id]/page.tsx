@@ -146,7 +146,7 @@ export default function ProductionLoss() {
             <div className="flex flex-col mt-3 gap-3">
                 <div>
                     <button className="button-add" onClick={openModal}>
-                        <i className="fa-solid fa-plus mr-2"></i>
+                        <i className="fa-solid fa-plus mr-2"></i>{" "}
                         เพิ่มข้อมูล
                     </button>
                 </div>
@@ -188,26 +188,34 @@ export default function ProductionLoss() {
                 <Modal title="บันทึกการผลิตที่เสียหาย" onClose={closeModal}>
                     <div className="flex flex-col gap-3">
                         <div>
-                            <label>วันที่</label>
-                            <input type="date" value={createdAt.toISOString().split('T')[0]}
-                                onChange={(e) => setCreatedAt(new Date(e.target.value))} />
+                            <label htmlFor="createdAt">วันที่</label>
+                            <input
+                                id="createdAt"
+                                type="date"
+                                value={createdAt.toISOString().split('T')[0]}
+                                onChange={(e) => setCreatedAt(new Date(e.target.value))}
+                            />
                         </div>
                         <div>
-                            <label>จำนวน</label>
-                            <input type="text" value={qty}
-                                onChange={(e) => setQty(Number(e.target.value))} />
+                            <label htmlFor="qty">จำนวน</label>
+                            <input
+                                id="qty"
+                                type="text"
+                                value={qty}
+                                onChange={(e) => setQty(Number(e.target.value))}
+                            />
                         </div>
                         <div>
-                            <label>หมายเหตุ</label>
-                            <input type="text" value={remark} onChange={(e) => setRemark(e.target.value)} />
+                            <label htmlFor="remark">หมายเหตุ</label>
+                            <input id="remark" type="text" value={remark} onChange={(e) => setRemark(e.target.value)} />
                         </div>
                         <div className="flex justify-end gap-2">
                             <button type="button" onClick={closeModal} className="modal-btn modal-btn-cancel">
-                                <i className="fas fa-times mr-2"></i>
+                                <i className="fas fa-times mr-2"></i>{" "}
                                 ยกเลิก
                             </button>
                             <button type="submit" onClick={handleSave} className="modal-btn modal-btn-submit">
-                                <i className="fas fa-check mr-2"></i>
+                                <i className="fas fa-check mr-2"></i>{" "}
                                 บันทึก
                             </button>
                         </div>
@@ -217,4 +225,4 @@ export default function ProductionLoss() {
 
         </div>
     )
-} 
+}  
