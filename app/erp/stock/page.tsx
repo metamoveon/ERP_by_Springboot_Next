@@ -31,6 +31,16 @@ export default function Stock() {
     const [showModalHistory, setShowModalHistory] = useState(false);
     const [storeImports, setStoreImports] = useState<StoreImportInterface[]>([]);
 
+    // modal transfer
+    const [showModalTransfer, setShowModalTransfer] = useState(false);
+    const [fromStoreId, setFromStoreId] = useState<number>(0);
+    const [toStoreId, setToStoreId] = useState<number>(0);
+    const [qtyTransfer, setQtyTransfer] = useState<number>(0);
+    const [remarkTransfer, setRemarkTransfer] = useState<string>('');
+    const [transferCreatedAt, setTransferCreatedAt] = useState<Date>(new Date());
+    const [fromStoreName, setFromStoreName] = useState<string>('');
+    const [productionTransfer, setProductionTransfer] = useState<number>(0);
+
     useEffect(() => {
         fetchStores();
         fetchProductions();
@@ -274,13 +284,29 @@ export default function Stock() {
         openModalHistory(sotreId);
     }
 
+    const openModalTransfer = (fromStoreName: string) => {
+        setShowModalTransfer(true);
+        setFromStoreName(fromStoreName);
+    }
+
+    const closeModalTransfer = () => {
+        setShowModalTransfer(false);
+        setFromStoreId(0);
+        setToStoreId(0);
+        setQtyTransfer(0);
+        setRemarkTransfer('');
+        setTransferCreatedAt(new Date());
+        setProductionTransfer(productions[0].id);
+    }
+
     return (
         <div>
             <h1 className="text-2xl font-bold">คลังสินค้า</h1>
             <div className="flex flex-col gap-2 mt-3">
                 <div>
                     <button className="button-add" onClick={openModal}>
-                        <i className="fa-solid fa-plus mr-2"></i> เพิ่มรายการ
+                        <i className="fa-solid fa-plus me-2"></i>
+                        เพิ่มรายการ
                     </button>
                 </div>
 
@@ -302,14 +328,19 @@ export default function Stock() {
                                     <td>{store.remark}</td>
                                     <td>
                                         <div className="flex gap-1 justify-center">
+                                            <button className="table-edit-btn table-action-btn"
+                                                onClick={() => openModalTransfer(store.name)}>
+                                                <i className="fa fa-exchange-alt mr-2"></i>
+                                                โอนสินค้า
+                                            </button>
                                             <button onClick={() => openModalImport(store.id)}
                                                 className="table-edit-btn table-action-btn">
-                                                <i className="fa fa-plus mr-2"></i>{" "}
-                                                รับของเข้าสต็อก
+                                                <i className="fa fa-plus mr-2"></i>
+                                                รับเข้า
                                             </button>
                                             <button className="table-edit-btn table-action-btn"
                                                 onClick={() => openModalHistory(store.id)}>
-                                                <i className="fa fa-history mr-2"></i>{" "}
+                                                <i className="fa fa-history mr-2"></i>
                                                 ประวัติ
                                             </button>
                                             <button onClick={() => handleEdit(store)}
@@ -333,46 +364,31 @@ export default function Stock() {
                         <form onSubmit={(e) => handleSave(e)}>
                             <div className="flex flex-col gap-2">
                                 <div>
-                                    <label htmlFor="name-input">ชื่อคลัง</label>
-                                    <input
-                                        id="name-input"
-                                        type="text"
-                                        className="input-field"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                    />
+                                    <label>ชื่อคลัง</label>
+                                    <input type="text" className="input-field" value={name}
+                                        onChange={(e) => setName(e.target.value)} />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="address-input">ที่อยู่</label>
-                                    <input
-                                        id="address-input"
-                                        type="text"
-                                        className="input-field"
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
-                                    />
+                                    <label>ที่อยู่</label>
+                                    <input type="text" className="input-field" value={address}
+                                        onChange={(e) => setAddress(e.target.value)} />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="remark-input">หมายเหตุ</label>
-                                    <input
-                                        id="remark-input"
-                                        type="text"
-                                        className="input-field"
-                                        value={remark}
-                                        onChange={(e) => setRemark(e.target.value)}
-                                    />
+                                    <label>หมายเหตุ</label>
+                                    <input type="text" className="input-field" value={remark}
+                                        onChange={(e) => setRemark(e.target.value)} />
                                 </div>
 
                                 <div className="flex justify-end gap-2">
                                     <button type="button" onClick={() => setShowModal(false)}
                                         className="modal-btn modal-btn-cancel">
-                                        <i className="fas fa-times mr-2"></i>{' '}
+                                        <i className="fas fa-times mr-2"></i>
                                         ยกเลิก
                                     </button>
                                     <button type="submit" className="modal-btn modal-btn-submit">
-                                        <i className="fas fa-check mr-2"></i>{' '}
+                                        <i className="fas fa-check mr-2"></i>
                                         บันทึก
                                     </button>
                                 </div>
@@ -386,13 +402,9 @@ export default function Stock() {
                         <form onSubmit={(e) => handleImport(e)}>
                             <div className="flex flex-col gap-2">
                                 <div>
-                                    <label htmlFor="production-select">สินค้าที่จะนำเข้า</label>
-                                    <select
-                                        id="production-select"
-                                        className="input-field"
-                                        value={productionId}
-                                        onChange={(e) => changeProduction(Number(e.target.value))}
-                                    >
+                                    <label>สินค้าที่จะนำเข้า</label>
+                                    <select className="input-field" value={productionId}
+                                        onChange={(e) => changeProduction(Number(e.target.value))}>
                                         {productions.map((production) => (
                                             <option key={production.id} value={production.id}>
                                                 {production.name}
@@ -402,15 +414,8 @@ export default function Stock() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="total-production-log-input">จำนวนที่ผลิต</label>
-                                    <input
-                                        id="total-production-log-input"
-                                        type="number"
-                                        value={totalProductionLog}
-                                        className="input-field"
-                                        readOnly
-                                        disabled
-                                    />
+                                    <label>จำนวนที่ผลิต</label>
+                                    <input type="number" value={totalProductionLog} className="input-field" readOnly disabled />
                                 </div>
 
                                 <div>
@@ -483,6 +488,60 @@ export default function Stock() {
                                 </tbody>
                             </table>
                         </div>
+                    </Modal>
+                )}
+
+                {showModalTransfer && (
+                    <Modal title='โอนสินค้า' onClose={closeModalTransfer} size='xl'>
+                        <form className="flex flex-col gap-2">
+                            <div>
+                                <label>ต้นทาง</label>
+                                <input disabled type="text" value={fromStoreName} />
+                            </div>
+                            <div>
+                                <label>ปลายทาง</label>
+                                <select onChange={(e) => setToStoreId(Number(e.target.value))}>
+                                    {stores.map((store) => (
+                                        <option key={store.id} value={store.id}>
+                                            {store.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label>สินค้า</label>
+                                <select onChange={(e) => setProductionTransfer(Number(e.target.value))}>
+                                    {productions.map((production) => (
+                                        <option key={production.id} value={production.id}>
+                                            {production.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label>จำนวน</label>
+                                <input type="number" onChange={(e) => setQtyTransfer(Number(e.target.value))} />
+                            </div>
+                            <div>
+                                <label>หมายเหตุ</label>
+                                <input type="text" onChange={(e) => setRemarkTransfer(e.target.value)} />
+                            </div>
+                            <div>
+                                <label>วันที่โอน</label>
+                                <input type="date" onChange={(e) => setTransferCreatedAt(new Date(e.target.value))} />
+                            </div>
+                            <div className="flex justify-end gap-2 mt-3">
+                                <button type="button" className="modal-btn modal-btn-cancel"
+                                    onClick={closeModalTransfer}>
+                                    <i className="fas fa-times mr-2"></i>
+                                    ยกเลิก
+                                </button>
+                                <button type="submit" className="modal-btn modal-btn-submit">
+                                    <i className="fas fa-check mr-2"></i>
+                                    บันทึก
+                                </button>
+                            </div>
+                        </form>
                     </Modal>
                 )}
             </div>
