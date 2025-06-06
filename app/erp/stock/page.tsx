@@ -1,7 +1,7 @@
 'use client'
 
 import { Config } from "@/app/Config";
-import { StoreInterface } from "@/app/interface/Storelnterface";
+import { StoreInterface } from "@/app/interface/StoreInterface";
 import axios from "axios";
 import { useEffect, useState, useTransition } from "react";
 import Swal from "sweetalert2";

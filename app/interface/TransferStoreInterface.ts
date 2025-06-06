@@ -1,5 +1,5 @@
 import { ProductionInterface } from "./ProductionInterface";
-import { StoreInterface } from "./Storelnterface";
+import { StoreInterface } from "./StoreInterface";
 
 export interface TransferStoreInterface {
     id: number;
